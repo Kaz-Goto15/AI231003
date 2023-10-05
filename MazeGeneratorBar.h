@@ -4,9 +4,10 @@ class MazeGeneratorBar :
     public MazeGeneratorBase
 {
 private:
+    static const int MIN_LENGTH = 5;    //迷路の最低マス（縦横幅）
 public:
     MazeGeneratorBar();
     ~MazeGeneratorBar();
-    void Generate() override;
+    void Generate(int x, int y) override;
 };
 

@@ -7,26 +7,32 @@ using std::cout;
 using std::cin;
 using std::endl;
 //–À˜HƒTƒCƒY
-const int sizeX = 41;
-const int sizeY = 21;
+static const int sizeX = 41;
+static const int sizeY = 21;
 
 int main()
 {
-    vector<MazeGeneratorBase>* mg;
-    mg->push_back(new MazeGeneratorBar());
-    int x, y;
-    cout << "–À˜H‚Ìc•‚ğ“ü—ÍF";
-    cin >> y;
-    cout << "–À˜H‚Ì‰¡•‚ğ“ü—ÍF";
-    cin >> x;
-    cout << "–À˜H‚Ì¶¬•û–@‚ğ‘I‘ği";
-    for (int i = 0; i < mg->size(); i++) {
-        cout << i << ": " << mg.modelName;
-    }
-    int type;
-    cin >> type;
-    //–À˜H¶¬
-    
+	vector<MazeGeneratorBase*> mazeModelList;
+	mazeModelList.push_back(new MazeGeneratorBar());
+	int x, y;
+	cout << "–À˜H‚Ìc•‚ğ“ü—ÍF";
+	cin >> y;
+	cout << "–À˜H‚Ì‰¡•‚ğ“ü—ÍF";
+	cin >> x;
+	cout << "–À˜H‚Ì¶¬•û–@‚ğ‘I‘ği";
+	for (int i = 0; i < mazeModelList.size(); i++) {
+		cout << i << ": " << mazeModelList[i]->GetModelName();
+	}
+	cout << ")\n";
+	int type;
+	cin >> type;
+	//–À˜H¶¬
+	mazeModelList[type]->Generate(x,y);
+	
+	//ƒ‚ƒfƒ‹ƒŠƒXƒg‚ÌŠJ•ú
+	vector<MazeGeneratorBase*> ::iterator it = mazeModelList.begin();
+	while (it != mazeModelList.end()) {
+		delete (*it);
+		++it;
+	}
 }
-
-//

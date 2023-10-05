@@ -1,12 +1,24 @@
 #include "MazeGeneratorBase.h"
 #include <iostream>
 #include <sstream>
-MazeGeneratorBase::MazeGeneratorBase()
+MazeGeneratorBase::MazeGeneratorBase(std::string modelName):
+	modelName_(modelName)
 {
 }
 
 MazeGeneratorBase::~MazeGeneratorBase()
 {
+}
+
+void MazeGeneratorBase::Generate(int x, int y)
+{
+	width_ = x;
+	height_ = y;
+	Init();
+	while(true) {
+		Update();
+		Sleep(500);
+	}
 }
 
 void MazeGeneratorBase::Output()

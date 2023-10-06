@@ -45,54 +45,61 @@ bool MazeGeneratorBar::Init()
 
 bool MazeGeneratorBar::Update()
 {
-    //ランダム値(0123 or 012)を決め
+	//
+	//迷路全体を構成する2次元配列を、幅高さ5以上の奇数で生成
+	//迷路の外周を壁、それ以外を通路とする
+	//外周の内側に基準となる壁(棒)を1セルおき(x,yともに偶数の座標)に配置
+	//内側の壁(棒)を走査し、ランダムな方向に倒して壁とするが、以下に当てはまる方向には倒してはいけない。
+	//  1行目の内側の壁以外では上方向に倒してはいけない。
+	//  すでに棒が倒され壁になっている場合、その方向には倒してはいけない。
+	//ランダム値(0123 or 012)を決め
 
-    //2ずつy,xに棒立て判定
+	//2ずつy,xに棒立て判定
 	/*
 	//棒を立て倒す
-            var rnd = new Random();
-    for (int x = 2; x < width - 1; x += 2)
-            {
-                for (int y = 2; y < height - 1; y += 2)
-                {
-                    maze[x, y] = Wall; // 棒を立てる
+			var rnd = new Random();
+	for (int x = 2; x < width - 1; x += 2)
+			{
+				for (int y = 2; y < height - 1; y += 2)
+				{
+					maze[x, y] = Wall; // 棒を立てる
 
-                    // 倒せるまで繰り返す
-                    while (true){
-                        // 1行目のみ上に倒せる
-                        int direction;
-                        if (y == 2)
-                            direction = rnd.Next(4);
-                        else
-                            direction = rnd.Next(3);
+					// 倒せるまで繰り返す
+					while (true){
+						// 1行目のみ上に倒せる
+						int direction;
+						if (y == 2)
+							direction = rnd.Next(4);
+						else
+							direction = rnd.Next(3);
 
-                        // 棒を倒す方向を決める
-                        int wallX = x;
-                        int wallY = y;
-                        switch (direction)
-                        {
-                            case 0: // 右
-                                wallX++;
-                                break;
-                            case 1: // 下
-                                wallY++;
-                                break;
-                            case 2: // 左
-                                wallX--;
-                                break;
-                            case 3: // 上
-                                wallY--;
-                                break;
-                        }
-                        // 壁じゃない場合のみ倒して終了
-                        if (maze[wallX, wallY] != Wall)
-                        {
-                            maze[wallX, wallY] = Wall;
-                            break;
-                        }
-                    }
-                }
-            }
+						// 棒を倒す方向を決める
+						int wallX = x;
+						int wallY = y;
+						switch (direction)
+						{
+							case 0: // 右
+								wallX++;
+								break;
+							case 1: // 下
+								wallY++;
+								break;
+							case 2: // 左
+								wallX--;
+								break;
+							case 3: // 上
+								wallY--;
+								break;
+						}
+						// 壁じゃない場合のみ倒して終了
+						if (maze[wallX, wallY] != Wall)
+						{
+							maze[wallX, wallY] = Wall;
+							break;
+						}
+					}
+				}
+			}
 	
 	
 	

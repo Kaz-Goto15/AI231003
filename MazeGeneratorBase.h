@@ -3,6 +3,9 @@
 #include <string>
 using std::vector;
 
+namespace {
+	static const int UPDATE_DELAY = 500;
+}
 class MazeGeneratorBase
 {
 public:
@@ -18,9 +21,9 @@ protected:
 		MAP_WALL = 0,
 		MAP_FLOOR = 1
 	};
-
-	int width_, height_;
-	vector<vector<int>> map_;
 	std::string modelName_;
+	int width_, height_;
+	bool isFinished;
+	vector<vector<int>> map_;
 };
 

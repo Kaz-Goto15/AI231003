@@ -8,6 +8,7 @@ private:
 public:
     MazeGeneratorBar();
     ~MazeGeneratorBar();
-    void Generate(int x, int y) override;
+    bool Init() override;
+    bool Update() override;
 };
 

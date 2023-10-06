@@ -1,8 +1,12 @@
 #include "MazeGeneratorBase.h"
 #include <iostream>
 #include <sstream>
+#include <windows.h>
+
 MazeGeneratorBase::MazeGeneratorBase(std::string modelName):
-	modelName_(modelName)
+	modelName_(modelName),
+	width_(-1),height_(-1),
+	isFinished(false)
 {
 }
 
@@ -15,9 +19,9 @@ void MazeGeneratorBase::Generate(int x, int y)
 	width_ = x;
 	height_ = y;
 	Init();
-	while(true) {
-		Update();
-		Sleep(500);
+	while(!isFinished) {
+		Sleep(UPDATE_DELAY);
+		isFinished = Update();
 	}
 }
 

@@ -1,18 +1,16 @@
 #pragma once
 #include "MazeGeneratorBase.h"
-#include <Windows.h>
 class MazeGeneratorBar :
     public MazeGeneratorBase
 {
 private:
     static const int MIN_LENGTH = 5;    //迷路の最低マス（縦横幅）
-    //static const POINT REFERENCE_POINT = { 2, 2 };
-    struct REFER {
+    static const int FIRST_WALL_ROW = 2;
+    struct POINT {
         int x;
         int y;
-    }
-    
-    static const REFER REFERENCE_POINT = { 2,2 };
+    };
+    //static REFER REFERENCE_POINT = { 2, 2 };
     //REFERENCE_POINT.x = 1;
     enum DIRECTION
     {
@@ -22,6 +20,7 @@ private:
         DIR_UP,
         DIR_MAX
     };
+    bool IsEven(int num) { return !(num % 2); }
 public:
     MazeGeneratorBar();
     ~MazeGeneratorBar();

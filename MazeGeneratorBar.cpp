@@ -2,8 +2,6 @@
 #include <iostream>
 using std::cout;
 
-static const POINT REFERENCE_POINT = { 2, 2 };
-
 MazeGeneratorBar::MazeGeneratorBar():
 	MazeGeneratorBase("棒倒し法")
 {
@@ -24,11 +22,11 @@ bool MazeGeneratorBar::Init()
 		cout << "指定された縦幅の値が小さすぎます。生成可能な最低値に置換します。\n";
 		height_ = MIN_LENGTH;
 	}
-	if (width_ % 2 == 0) {
+	if (IsEven(width_)) {
 		cout << "横幅が偶数です。指定値に1を加え奇数にします。\n";
 		width_++;
 	}
-	if (height_ % 2 == 0) {
+	if (IsEven(height_)) {
 		cout << "縦幅が偶数です。指定値に1を加え奇数にします。\n";
 		height_++;
 	}
@@ -58,16 +56,41 @@ bool MazeGeneratorBar::Update()
 	//ランダム値(0123 or 012)を決め
 	srand((unsigned int)time(nullptr));
 	int num = rand();
-	for (int x = 2; x < width_ - 1; x += 2) {
-		for (int y = 2; y < height_ - 1; y += 2) {
-			map_[y][x] = MAP_WALL;
+	for (int y = 1; y < height_; y ++) {
+		for (int x = 1; x < width_; x ++) {
+			if (IsEven(y) && IsEven(x)) {
+				map_[y][x] = MAP_WALL;
 
-			while (true) {
-				int dir;
-				//1行目の上倒し
-				if (y == REFERENCE_POINT.y)dir = num % DIR_MAX;
-				else dir = num % (DIR_MAX - 1);
+				while (true) {
+					int dir;
+					//方向決め　1行目のみ上も
+					if (y == FIRST_WALL_ROW)dir = num % DIR_MAX;
+					else dir = num % (DIR_MAX - 1);
+
+					POINT target = { x,y };
+					switch (dir){
+					case DIR_LEFT:
+						target.x--;
+						break;
+					case DIR_RIGHT:
+						target.x++;
+						break;
+					case DIR_DOWN:
+						target.y++;
+						break;
+					case DIR_UP:
+						target.y--;
+						break;
+					}
+
+					// 壁でなければ倒し抜ける
+					if (map_[target.y][target.x] != MAP_WALL){
+						map_[target.y][target.x] = MAP_WALL;
+						break;
+					}
+				}
 			}
+			Output();
 		}
 	}
 	//2ずつy,xに棒立て判定

@@ -1,6 +1,9 @@
 #include "MazeGeneratorBar.h"
 #include <iostream>
 using std::cout;
+
+static const POINT REFERENCE_POINT = { 2, 2 };
+
 MazeGeneratorBar::MazeGeneratorBar():
 	MazeGeneratorBase("–_“|‚µ–@")
 {
@@ -53,7 +56,20 @@ bool MazeGeneratorBar::Update()
 	//  1s–Ú‚Ì“à‘¤‚Ì•ÇˆÈŠO‚Å‚Íã•ûŒü‚É“|‚µ‚Ä‚Í‚¢‚¯‚È‚¢B
 	//  ‚·‚Å‚É–_‚ª“|‚³‚ê•Ç‚É‚È‚Á‚Ä‚¢‚éê‡A‚»‚Ì•ûŒü‚É‚Í“|‚µ‚Ä‚Í‚¢‚¯‚È‚¢B
 	//ƒ‰ƒ“ƒ_ƒ€’l(0123 or 012)‚ğŒˆ‚ß
+	srand((unsigned int)time(nullptr));
+	int num = rand();
+	for (int x = 2; x < width_ - 1; x += 2) {
+		for (int y = 2; y < height_ - 1; y += 2) {
+			map_[y][x] = MAP_WALL;
 
+			while (true) {
+				int dir;
+				//1s–Ú‚Ìã“|‚µ
+				if (y == REFERENCE_POINT.y)dir = num % DIR_MAX;
+				else dir = num % (DIR_MAX - 1);
+			}
+		}
+	}
 	//2‚¸‚Ây,x‚É–_—§‚Ä”»’è
 	/*
 	//–_‚ğ—§‚Ä“|‚·

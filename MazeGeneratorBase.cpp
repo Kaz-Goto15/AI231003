@@ -1,4 +1,4 @@
-#include "MazeGeneratorBase.h"
+﻿#include "MazeGeneratorBase.h"
 #include <iostream>
 #include <sstream>
 #include <windows.h>
@@ -35,4 +35,6 @@ void MazeGeneratorBase::Output()
 		std::cout << ss.str() << std::endl;
 		ss.str("");
 	}
+	std::cout << std::endl;
+	std::cout << "■\n";
 }

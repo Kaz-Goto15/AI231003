@@ -1,5 +1,7 @@
 #include "MazeGeneratorBar.h"
 #include <iostream>
+
+#include <windows.h>
 using std::cout;
 
 MazeGeneratorBar::MazeGeneratorBar():
@@ -55,17 +57,19 @@ bool MazeGeneratorBar::Update()
 	//  ‚·‚Å‚É–_‚ª“|‚³‚ê•Ç‚É‚È‚Á‚Ä‚¢‚éê‡A‚»‚Ì•ûŒü‚É‚Í“|‚µ‚Ä‚Í‚¢‚¯‚È‚¢B
 	//ƒ‰ƒ“ƒ_ƒ€’l(0123 or 012)‚ğŒˆ‚ß
 	srand((unsigned int)time(nullptr));
-	int num = rand();
-	for (int y = 1; y < height_; y ++) {
-		for (int x = 1; x < width_; x ++) {
+	for (int y = 1; y < height_ -1; y ++) {
+		for (int x = 1; x < width_ -1; x ++) {
 			if (IsEven(y) && IsEven(x)) {
+				cout << "Now: (" << x << "," << y << ")\n";
+				Sleep(500);
+
 				map_[y][x] = MAP_WALL;
 
 				while (true) {
-					int dir;
+					int dir = rand();
 					//•ûŒüŒˆ‚ß@1s–Ú‚Ì‚İã‚à
-					if (y == FIRST_WALL_ROW)dir = num % DIR_MAX;
-					else dir = num % (DIR_MAX - 1);
+					if (y == FIRST_WALL_ROW)dir %= DIR_MAX;
+					else dir %= (DIR_MAX - 1);
 
 					POINT target = { x,y };
 					switch (dir){
@@ -82,7 +86,7 @@ bool MazeGeneratorBar::Update()
 						target.y--;
 						break;
 					}
-
+					cout << "Tgt: (" << target.x << "," << target.y << ")\n";
 					// •Ç‚Å‚È‚¯‚ê‚Î“|‚µ”²‚¯‚é
 					if (map_[target.y][target.x] != MAP_WALL){
 						map_[target.y][target.x] = MAP_WALL;
@@ -93,6 +97,7 @@ bool MazeGeneratorBar::Update()
 			Output();
 		}
 	}
+	isFinished = true;
 	//2‚¸‚Ây,x‚É–_—§‚Ä”»’è
 	/*
 	//–_‚ğ—§‚Ä“|‚·

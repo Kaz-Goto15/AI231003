@@ -21,6 +21,7 @@ protected:
 		MAP_WALL = 0,
 		MAP_FLOOR = 1
 	};
+	std::string outStr = { "Å°", "Å@" };
 	static const std::string MAZE_OUT_;
 	std::string modelName_;
 	int width_, height_;

@@ -36,5 +36,4 @@ void MazeGeneratorBase::Output()
 		ss.str("");
 	}
 	std::cout << std::endl;
-	std::cout << "■\n";
 }

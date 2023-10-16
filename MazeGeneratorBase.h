@@ -19,10 +19,10 @@ public:
 protected:
 	enum MAZE_ATTRIBUTE {
 		MAP_WALL = 0,
-		MAP_FLOOR = 1
+		MAP_FLOOR = 1,
+		MAP_MAX
 	};
-	std::string outStr = { "Å°", "Å@" };
-	static const std::string MAZE_OUT_;
+	std::string outStr[MAP_MAX] = {"Å°", "Å@"};
 	std::string modelName_;
 	int width_, height_;
 	bool isFinished;

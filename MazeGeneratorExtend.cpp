@@ -1,18 +1,18 @@
-#include "MazeGeneratorBar.h"
+#include "MazeGeneratorExtend.h"
 #include <iostream>
 #include <windows.h>
 using std::cout;
 
-MazeGeneratorBar::MazeGeneratorBar():
-	MazeGeneratorBase("棒倒し法")
+MazeGeneratorExtend::MazeGeneratorExtend() :
+	MazeGeneratorBase("壁伸ばし法")
 {
 }
 
-MazeGeneratorBar::~MazeGeneratorBar()
+MazeGeneratorExtend::~MazeGeneratorExtend()
 {
 }
-//棒倒し法のやりかた
-bool MazeGeneratorBar::Init()
+//壁伸ばし法のやりかた
+bool MazeGeneratorExtend::Init()
 {
 	//迷路の大きさが適しているか
 	if (width_ < MIN_LENGTH) {
@@ -45,18 +45,23 @@ bool MazeGeneratorBar::Init()
 	return true;
 }
 
-bool MazeGeneratorBar::Update()
+bool MazeGeneratorExtend::Update()
 {
-	//
 	//迷路全体を構成する2次元配列を、幅高さ5以上の奇数で生成
 	//迷路の外周を壁、それ以外を通路とする
-	//外周の内側に基準となる壁(棒)を1セルおき(x,yともに偶数の座標)に配置
-	//内側の壁(棒)を走査し、ランダムな方向に倒して壁とするが、以下に当てはまる方向には倒してはいけない。
-	//  1行目の内側の壁以外では上方向に倒してはいけない。
-	//  すでに棒が倒され壁になっている場合、その方向には倒してはいけない。
+	//x, yともに偶数となる座標を壁伸ばし開始座標(候補)としてリストアップする
+	//壁伸ばし開始座標からランダムで座標を取り出し、通路の場合のみ壁伸ばし処理を行う
+	// ※すべての候補座標が壁になるまで繰り返す
+	//壁伸ばし処理：
+	//	指定座標を壁とする
+	//	次に掘り進める方向(隣のセルが通路の方向かつ2セル先が現在拡張中の壁ではない方向)をランダムで決定
+	//	拡張する方向2セル先が壁の場合(既存の壁に接続された場合)、壁の拡張を終了
+	//	通路の場合、そのセルから続けて拡張します。(5. の処理を再帰的に呼び出す。)
+	//	四方がすべて現在拡張中の壁の場合、拡張できる座標が見つかるまで、現在拡張中の壁をバックして、壁の拡張を再開する
+	//すべての候補座標が壁(拡張済)になれば完了
 	srand((unsigned int)time(nullptr));
-	for (int y = 1; y < height_ -1; y ++) {
-		for (int x = 1; x < width_ -1; x ++) {
+	for (int y = 1; y < height_ - 1; y++) {
+		for (int x = 1; x < width_ - 1; x++) {
 			if (IsEven(y) && IsEven(x)) {
 				map_[y][x] = MAP_WALL;
 
@@ -67,7 +72,7 @@ bool MazeGeneratorBar::Update()
 					else dir %= (DIR_MAX - 1);
 
 					POINT target = { x,y };
-					switch (dir){
+					switch (dir) {
 					case DIR_LEFT:
 						target.x--;
 						break;
@@ -83,7 +88,7 @@ bool MazeGeneratorBar::Update()
 					}
 					cout << "Tgt: (" << target.x << "," << target.y << ")\n";
 					// 壁でなければ倒し抜ける
-					if (map_[target.y][target.x] != MAP_WALL){
+					if (map_[target.y][target.x] != MAP_WALL) {
 						map_[target.y][target.x] = MAP_WALL;
 						break;
 					}

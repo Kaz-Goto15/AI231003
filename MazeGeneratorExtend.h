@@ -10,8 +10,6 @@ private:
         int x;
         int y;
     };
-    //static REFER REFERENCE_POINT = { 2, 2 };
-    //REFERENCE_POINT.x = 1;
     enum DIRECTION
     {
         DIR_LEFT = 0,
@@ -21,6 +19,13 @@ private:
         DIR_MAX
     };
     bool IsEven(int num) { return !(num % 2); }
+
+    vector<POINT> startPointList;
+    vector<POINT> currentWallPoint;
+    void ExtendWall(POINT pts);
+    bool IsDirCanExtend(POINT pts, POINT ValueOnDir);
+    bool IsCurrentWall(int currentPtsAttribute);
+    POINT GetValueOnDirection(DIRECTION dir);
 public:
     MazeGeneratorExtend();
     ~MazeGeneratorExtend();

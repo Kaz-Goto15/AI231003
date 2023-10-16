@@ -14,6 +14,8 @@ MazeGeneratorBar::~MazeGeneratorBar()
 //–_“|‚µ–@‚Ì‚â‚è‚©‚½
 bool MazeGeneratorBar::Init()
 {
+	srand((unsigned int)time(nullptr));
+
 	//–À˜H‚Ì‘å‚«‚³‚ª“K‚µ‚Ä‚¢‚é‚©
 	if (width_ < MIN_LENGTH) {
 		cout << "Žw’è‚³‚ê‚½‰¡•‚Ì’l‚ª¬‚³‚·‚¬‚Ü‚·B¶¬‰Â”\‚ÈÅ’á’l‚É’uŠ·‚µ‚Ü‚·B\n";
@@ -54,7 +56,6 @@ bool MazeGeneratorBar::Update()
 	//“à‘¤‚Ì•Ç(–_)‚ð‘–¸‚µAƒ‰ƒ“ƒ_ƒ€‚È•ûŒü‚É“|‚µ‚Ä•Ç‚Æ‚·‚é‚ªAˆÈ‰º‚É“–‚Ä‚Í‚Ü‚é•ûŒü‚É‚Í“|‚µ‚Ä‚Í‚¢‚¯‚È‚¢B
 	//  1s–Ú‚Ì“à‘¤‚Ì•ÇˆÈŠO‚Å‚Íã•ûŒü‚É“|‚µ‚Ä‚Í‚¢‚¯‚È‚¢B
 	//  ‚·‚Å‚É–_‚ª“|‚³‚ê•Ç‚É‚È‚Á‚Ä‚¢‚éê‡A‚»‚Ì•ûŒü‚É‚Í“|‚µ‚Ä‚Í‚¢‚¯‚È‚¢B
-	srand((unsigned int)time(nullptr));
 	for (int y = 1; y < height_ -1; y ++) {
 		for (int x = 1; x < width_ -1; x ++) {
 			if (IsEven(y) && IsEven(x)) {

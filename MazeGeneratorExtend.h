@@ -25,7 +25,7 @@ private:
     void ExtendWall(POINT pts);
     bool IsDirCanExtend(POINT pts, POINT ValueOnDir);
     bool IsCurrentWall(int currentPtsAttribute);
-    POINT GetValueOnDirection(DIRECTION dir);
+    void StoreDirectionValue(POINT* pts, DIRECTION dir);
 public:
     MazeGeneratorExtend();
     ~MazeGeneratorExtend();

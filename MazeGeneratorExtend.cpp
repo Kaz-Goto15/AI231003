@@ -127,12 +127,38 @@ bool MazeGeneratorExtend::Update()
 	return true;
 }
 
+//座標から壁拡張
 void MazeGeneratorExtend::ExtendWall(POINT pts)
 {
 	//static const int[4];
-	vector<DIRECTION> dir;
-	for (DIRECTION dir = DIR_LEFT; dir < DIR_MAX; dir = static_cast(DIRECTION++)) {
-		if(IsDirCanExtend(pts, GetValueOnDirection(DIRECT))
+	//伸ばせる方向決め
+	vector<DIRECTION> dirList;
+	for (DIRECTION d = DIR_LEFT; d < DIR_MAX; d = static_cast<DIRECTION>(d + 1)){
+		POINT dirPts;
+		StoreDirectionValue(&dirPts, d);
+		if (IsDirCanExtend(pts, dirPts)) {
+			dirList.push_back(d);
+		}
+	}
+
+	//ランダムに伸ばす
+	if (dirList.size() > 0) {
+		//自位置を壁に
+		map_[pts.y][pts.x] = MAP_WALL;
+		DIRECTION dir = dirList[rand() % dirList.size()];
+		//2マス先が床の場合のみ続ける
+		bool isFloor;
+		POINT dirPts;
+		StoreDirectionValue(&dirPts, dir);
+		isFloor = (map_[pts.y + dirPts.y * 2][pts.x + dirPts.x * 2] == MAP_FLOOR);
+		map_[--pts.y + dirPts.y*2][--pts.x + dirPts.x*2] = MAP_WALL;
+		map_[--pts.y + dirPts.y * 2][--pts.x + dirPts.x * 2] = MAP_WALL;
+		if (isFloor)ExtendWall(pts);
+	}
+	else {
+		// すべて現在拡張中の壁にぶつかる場合、バックして再開
+		//var beforeCell = CurrentWallCells.Pop();
+		//ExtendWall(beforeCell.X, beforeCell.Y);
 	}
 }
 
@@ -147,19 +173,24 @@ bool MazeGeneratorExtend::IsCurrentWall(int currentPtsAttribute)
 	return false;
 }
 
-POINT MazeGeneratorExtend::GetValueOnDirection(DIRECTION dir)
+void MazeGeneratorExtend::StoreDirectionValue(POINT* pts, DIRECTION dir)
 {
 	switch (dir)
 	{
 	case MazeGeneratorExtend::DIR_LEFT:
-		return {-1,0}
+		pts->x = -1;
+		pts->y = 0;
 	case MazeGeneratorExtend::DIR_RIGHT:
-		return { 1,0 };
+		pts->x = 1;
+		pts->y = 0;
 	case MazeGeneratorExtend::DIR_DOWN:
-		return { 0,1 };
+		pts->x = 0;
+		pts->y = 1;
 	case MazeGeneratorExtend::DIR_UP:
-		return { 0,-1 };
+		pts->x = 0;
+		pts->y = -1;
 	default:
-		return { 0,0 };
+		pts->x = 0;
+		pts->y = 0;
 	}
 }

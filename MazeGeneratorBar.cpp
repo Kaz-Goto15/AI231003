@@ -96,8 +96,6 @@ bool MazeGeneratorBar::Create()
 			}
 		}
 	}
-	isFinished = true;
-
 	return true;
 }
 

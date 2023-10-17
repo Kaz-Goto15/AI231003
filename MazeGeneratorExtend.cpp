@@ -34,22 +34,18 @@ bool MazeGeneratorExtend::Init()
 		height_++;
 	}
 
-	//指定サイズで生成、外周を壁に
+	//指定サイズで生成、外周を壁にする
+	//床の偶数座標を開始座標リストに追加
 	map_ = vector<vector<int>>(height_, vector<int>(width_, MAP_FLOOR));
 	for (int h = 0; h < height_; h++) {
 		for (int w = 0; w < width_; w++) {
 			if (h == 0 || w == 0 || h == height_ - 1 || w == width_ - 1) {
 				map_[h][w] = MAP_WALL;
+			}else
+			if (IsEven(h) && IsEven(w)) {
+				startPointList.push_back({ w,h });
 			}
-		}
-	}
 
-	//偶数座標を開始座標リストに追加
-	for (int y = 1; y < height_ - 1; y++) {
-		for (int x = 1; x < width_ - 1; x++) {
-			if (IsEven(y) && IsEven(x)) {
-				startPointList.push_back({ x,y });
-			}
 		}
 	}
 
@@ -59,19 +55,8 @@ bool MazeGeneratorExtend::Init()
 
 bool MazeGeneratorExtend::Update()
 {
-	//迷路全体を構成する2次元配列を、幅高さ5以上の奇数で生成
-	//迷路の外周を壁、それ以外を通路とする
-	//x, yともに偶数となる座標を壁伸ばし開始座標(候補)としてリストアップ
-	// 
-	//壁伸ばし開始座標からランダムで座標を取り出し、通路の場合のみ壁伸ばし処理を行う
-	// ※すべての候補座標が壁になるまで繰り返す
-	//壁伸ばし処理：
-	//	指定座標を壁とする
-	//	次に掘り進める方向(隣のセルが通路の方向かつ2セル先が現在拡張中の壁ではない方向)をランダムで決定
-	//	拡張する方向2セル先が壁の場合(既存の壁に接続された場合)、壁の拡張を終了
-	//	通路の場合、そのセルから続けて拡張(5. の処理を再帰的に呼び出す。)
-	//	四方がすべて現在拡張中の壁の場合、拡張できる座標が見つかるまで、現在拡張中の壁をバックして、壁の拡張を再開する
-	//すべての候補座標が壁(拡張済)になれば完了
+	//候補座標から１つ選び、それを消去
+	//選んだ座標が床であれば、現在拡張中の壁配列をクリアし、拡張を行う
 	while (startPointList.size() > 0){
 		int index = rand() % startPointList.size();
 		POINT pts = startPointList[index];
@@ -91,6 +76,12 @@ bool MazeGeneratorExtend::Update()
 //座標から壁拡張
 void MazeGeneratorExtend::ExtendWall(POINT pts)
 {
+	//自身の座標を壁にする
+	// １マス先が床であり、もう１マス先が現在拡張中の壁配列に存在しない座標である方向を収集し、ランダムで決める
+	// 拡張後、その方向の2マス先が元から壁であれば拡張を終了
+	// 　　　　　　　　　　　　　元から通路であれば、その地点で拡張を行う
+	// 方向決めが０だった場合、最後の要素を削除した後、最後の要素で拡張を行う
+	
 	//伸ばせる方向決め
 	vector<DIRECTION> dirList;
 	for (DIRECTION d = DIR_LEFT; d < DIR_MAX; d = static_cast<DIRECTION>(d + 1)){
@@ -101,23 +92,20 @@ void MazeGeneratorExtend::ExtendWall(POINT pts)
 		}
 	}
 
-	//ランダムに伸ばす
+	//収集した方向のうちランダムに伸ばす
 	if (dirList.size() > 0) {
 		//自位置を壁に
 		SetWall(pts);
 		DIRECTION dir = dirList[rand() % dirList.size()];
 		//2マス先が床の場合のみ続ける
-		bool isFloor;
 		POINT dirPts;
 		StoreDirectionValue(&dirPts, dir);
-		isFloor = (map_[pts.y + dirPts.y * 2][pts.x + dirPts.x * 2] == MAP_FLOOR);
-		//--pts.x;
-		//--pts.y;
-		SetWall({ --pts.x + dirPts.x * 2 , --pts.y + dirPts.y * 2 });
-		SetWall({ --pts.x + dirPts.x * 2 , --pts.y + dirPts.y * 2 });
-		if (isFloor)ExtendWall(pts);
-	}
-	else {
+		POINT nextPts = pts + dirPts + dirPts;
+		bool isFloor = (map_[nextPts.y][nextPts.x] == MAP_FLOOR);
+		SetWall(nextPts);
+		SetWall(nextPts - dirPts);
+		if (isFloor)ExtendWall(nextPts);
+	}else {
 		// すべて現在拡張中の壁にぶつかる場合、バックして再開
 		currentWallPoint.pop_back();
 		POINT beforePoint = currentWallPoint.back();
@@ -127,8 +115,9 @@ void MazeGeneratorExtend::ExtendWall(POINT pts)
 
 bool MazeGeneratorExtend::IsDirCanExtend(POINT pts, POINT ValueOnDir)
 {
-	return (map_[pts.y + ValueOnDir.y][pts.x + ValueOnDir.x] == MAP_FLOOR &&
-		!IsCurrentWall({ pts.x + ValueOnDir.x * 2, pts.y + ValueOnDir.y * 2}));
+	POINT tmp = pts + ValueOnDir;
+	return (map_[tmp.y][tmp.x] == MAP_FLOOR &&
+		!IsCurrentWall(tmp + ValueOnDir));
 }
 
 bool MazeGeneratorExtend::IsCurrentWall(POINT pts)
@@ -166,7 +155,7 @@ void MazeGeneratorExtend::StoreDirectionValue(POINT* pts, DIRECTION dir)
 void MazeGeneratorExtend::SetWall(POINT pts)
 {
 	map_[pts.y][pts.x] = MAP_WALL;
-	if (IsEven(pts.x) && IsEven(pts.y)) {
+	if (IsEven(pts)) {
 		currentWallPoint.push_back(pts);
 	}
 }

@@ -13,6 +13,24 @@ private:
         bool operator == (const POINT pts) const {
             return (x == pts.x && y == pts.y);
         }
+        POINT operator + (const POINT& pts) {
+            POINT ret;
+            ret.x = x + pts.x;
+            ret.y = y + pts.y;
+            return ret;
+        }
+        POINT operator - (const POINT& pts) {
+            POINT ret;
+            ret.x = x - pts.x;
+            ret.y = y - pts.y;
+            return ret;
+        }
+        POINT operator += (const POINT& pts) {
+            return (*this + pts);
+        }
+        POINT operator -= (const POINT& pts) {
+            return (*this - pts);
+        }
     };
     enum DIRECTION
     {
@@ -23,6 +41,7 @@ private:
         DIR_MAX
     };
     bool IsEven(int num) { return !(num % 2); }
+    bool IsEven(POINT pts) { return (IsEven(pts.x) && IsEven(pts.y)); }
 
     vector<POINT> startPointList;
     vector<POINT> currentWallPoint;

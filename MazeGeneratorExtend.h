@@ -54,6 +54,6 @@ public:
     MazeGeneratorExtend();
     ~MazeGeneratorExtend();
     bool Init() override;
-    bool Update() override;
+    bool Create() override;
 };
 

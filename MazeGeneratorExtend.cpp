@@ -53,7 +53,7 @@ bool MazeGeneratorExtend::Init()
 	return true;
 }
 
-bool MazeGeneratorExtend::Update()
+bool MazeGeneratorExtend::Create()
 {
 	//候補座標から１つ選び、それを消去
 	//選んだ座標が床であれば、現在拡張中の壁配列をクリアし、拡張を行う
@@ -68,7 +68,6 @@ bool MazeGeneratorExtend::Update()
 		}
 		Output();
 	}
-	isFinished = true;
 
 	return true;
 }

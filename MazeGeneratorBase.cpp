@@ -5,8 +5,7 @@
 
 MazeGeneratorBase::MazeGeneratorBase(std::string modelName):
 	modelName_(modelName),
-	width_(-1),height_(-1),
-	isFinished(false)
+	width_(-1),height_(-1)
 {
 }
 
@@ -19,10 +18,7 @@ void MazeGeneratorBase::Generate(int x, int y)
 	width_ = x;
 	height_ = y;
 	Init();
-	while(!isFinished) {
-		//Sleep(UPDATE_DELAY);
-		isFinished = Update();
-	}
+	Create();
 }
 
 void MazeGeneratorBase::Output()

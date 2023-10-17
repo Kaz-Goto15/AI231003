@@ -12,7 +12,7 @@ public:
 	MazeGeneratorBase(std::string modelName);
 	virtual ~MazeGeneratorBase();
 	virtual bool Init() = 0;
-	virtual bool Update() = 0;
+	virtual bool Create() = 0;
 	void Generate(int x, int y);
 	void Output();
 	std::string GetModelName() { return modelName_; }
@@ -25,7 +25,6 @@ protected:
 	std::string outStr[MAP_MAX] = {"Å°", "Å@"};
 	std::string modelName_;
 	int width_, height_;
-	bool isFinished;
 	vector<vector<int>> map_;
 };
 

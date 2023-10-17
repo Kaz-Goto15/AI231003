@@ -47,7 +47,7 @@ bool MazeGeneratorBar::Init()
 	return true;
 }
 
-bool MazeGeneratorBar::Update()
+bool MazeGeneratorBar::Create()
 {
 	//
 	//迷路全体を構成する2次元配列を、幅高さ5以上の奇数で生成

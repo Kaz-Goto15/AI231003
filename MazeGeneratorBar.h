@@ -25,6 +25,6 @@ public:
     MazeGeneratorBar();
     ~MazeGeneratorBar();
     bool Init() override;
-    bool Update() override;
+    bool Create() override;
 };
 

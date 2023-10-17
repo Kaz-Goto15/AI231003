@@ -1,10 +1,11 @@
 #pragma once
 #include "MazeGeneratorBase.h"
-class MazeGeneratorExtend :
+class MazeGeneratorDig :
     public MazeGeneratorBase
 {
 private:
     static const int MIN_LENGTH = 5;    //ñ¿òHÇÃç≈í·É}ÉXÅiècâ°ïùÅj
+    static const int FIRST_WALL_ROW = 2;
     struct POINT {
         int x;
         int y;
@@ -44,14 +45,13 @@ private:
 
     vector<POINT> startPointList;
     vector<POINT> currentWallPoint;
-    void ExtendWall(POINT pts);
-    bool IsDirCanExtend(POINT pts, POINT ValueOnDir);
-    bool IsCurrentWall(POINT pts);
+    void Dig(POINT pts);
     void StoreDirectionValue(POINT* pts, DIRECTION dir);
-    void SetWall(POINT pts);
+    void SetFloor(POINT pts);
+    void StoreStartPoint(POINT* nextSPts);
 public:
-    MazeGeneratorExtend();
-    ~MazeGeneratorExtend();
+    MazeGeneratorDig();
+    ~MazeGeneratorDig();
     bool Init() override;
     bool Create() override;
 };

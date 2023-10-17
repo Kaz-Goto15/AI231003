@@ -1,6 +1,8 @@
-#include "MazeGeneratorBar.h"
 #include "MazeGeneratorBase.h"
+#include "MazeGeneratorBar.h"
 #include "MazeGeneratorExtend.h"
+#include "MazeGeneratorDig.h"
+
 #include <iostream>
 #include <vector>
 using std::vector;
@@ -16,7 +18,7 @@ int main()
 	vector<MazeGeneratorBase*> mazeModelList;
 	mazeModelList.push_back(new MazeGeneratorBar());
 	mazeModelList.push_back(new MazeGeneratorExtend());
-	//mazeModelList.push_back(new MazeGeneratorDig())
+	mazeModelList.push_back(new MazeGeneratorDig());
 	int x, y;
 	cout << "–À˜H‚Ìc•‚ð“ü—ÍF";
 	cin >> y;

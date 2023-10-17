@@ -95,8 +95,8 @@ void MazeGeneratorExtend::ExtendWall(POINT pts)
 	if (dirList.size() > 0) {
 		//自位置を壁に
 		SetWall(pts);
+		//方向を決め、２マス先まで壁にする 2マス先が床の場合のみ拡張を続ける
 		DIRECTION dir = dirList[rand() % dirList.size()];
-		//2マス先が床の場合のみ続ける
 		POINT dirPts;
 		StoreDirectionValue(&dirPts, dir);
 		POINT nextPts = pts + dirPts + dirPts;

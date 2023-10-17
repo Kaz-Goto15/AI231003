@@ -82,12 +82,46 @@ bool MazeGeneratorDig::Create()
 			}
 		}
 	}
-
+	Output();
 	return true;
 }
 
 void MazeGeneratorDig::Dig(POINT pts)
 {
+	while (true) {
+		//掘れる方向決め 採掘可能方向0でbreak
+		vector<DIRECTION> dirList;
+		for (DIRECTION d = static_cast<DIRECTION>(0); d < DIR_MAX; d = static_cast<DIRECTION>(d + 1)) {
+			POINT dirPts, tgtPtr;
+			StoreDirectionValue(&dirPts, d);
+			tgtPtr = pts + dirPts;
+			if (IsWall(tgtPtr) && IsWall(tgtPtr + dirPts)) {
+				dirList.push_back(d);
+			}
+		}
+		if (dirList.size() == 0)break;
+
+		//採掘可能方向のうちランダム方向に伸ばす
+		//自位置を床にし、開始座標リストに追加
+		SetFloor(pts);
+		//方向を決め、２マス先まで床にする　２マス先の偶数座標は開始座標リストに追加
+		DIRECTION dir = dirList[rand() % dirList.size()];
+		POINT dirPts;
+		StoreDirectionValue(&dirPts, dir);
+		POINT nextPts = pts + dirPts + dirPts;
+		SetFloor(nextPts);
+		SetFloor(nextPts - dirPts);
+		pts = nextPts;
+	}
+
+	Output();
+
+	//掘り進められなかった場合、開始座標リスト内のランダム座標から掘る
+	//開始座標リストが0になったら終了
+	POINT reDigPts;
+	if (StoreStartPoint(&reDigPts)) {
+		Dig(reDigPts);
+	}
 }
 
 void MazeGeneratorDig::StoreDirectionValue(POINT* pts, DIRECTION dir)
@@ -120,21 +154,23 @@ void MazeGeneratorDig::StoreDirectionValue(POINT* pts, DIRECTION dir)
 void MazeGeneratorDig::SetFloor(POINT pts)
 {
 	map_[pts.y][pts.x] = MAP_FLOOR;
-	if (IsEven(pts)) {
+	if (IsOdd(pts)) {
 		startPointList.push_back(pts);
 	}
 }
 
-void MazeGeneratorDig::StoreStartPoint(POINT* nextSPts)
+bool MazeGeneratorDig::StoreStartPoint(POINT* nextSPts)
 {
 	if (startPointList.size() > 0) {
 		int index = rand() % startPointList.size();
 		*nextSPts = startPointList[index];
 		startPointList.erase(startPointList.begin() + index);
+		return true;
 	}
-	else {
-		nextSPts = nullptr;
-		MessageBox(NULL, L"あほ", L"Error", MB_OK);
-		exit(0);
-	}
+	return false;
+}
+
+bool MazeGeneratorDig::IsWall(POINT pts)
+{
+	return (map_[pts.y][pts.x] == MAP_WALL);
 }

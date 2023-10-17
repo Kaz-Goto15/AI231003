@@ -26,7 +26,7 @@ int main()
 	cin >> x;
 	cout << "–À˜H‚Ì¶¬•û–@‚ð‘I‘ði";
 	for (int i = 0; i < mazeModelList.size(); i++) {
-		cout << i << ": " << mazeModelList[i]->GetModelName() << " ";
+		cout << i << ":" << mazeModelList[i]->GetModelName() << " ";
 	}
 	cout << ")\n";
 	int type;

@@ -5,7 +5,6 @@ class MazeGeneratorDig :
 {
 private:
     static const int MIN_LENGTH = 5;    //迷路の最低マス（縦横幅）
-    static const int FIRST_WALL_ROW = 2;
     struct POINT {
         int x;
         int y;
@@ -42,13 +41,14 @@ private:
     };
     bool IsEven(int num) { return !(num % 2); }
     bool IsEven(POINT pts) { return (IsEven(pts.x) && IsEven(pts.y)); }
+    bool IsOdd(POINT pts) { return !IsEven(pts); }
 
     vector<POINT> startPointList;
-    vector<POINT> currentWallPoint;
     void Dig(POINT pts);
     void StoreDirectionValue(POINT* pts, DIRECTION dir);
     void SetFloor(POINT pts);
-    void StoreStartPoint(POINT* nextSPts);
+    bool StoreStartPoint(POINT* nextSPts);
+    bool IsWall(POINT pts);
 public:
     MazeGeneratorDig();
     ~MazeGeneratorDig();

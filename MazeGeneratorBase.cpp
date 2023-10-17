@@ -27,7 +27,7 @@ void MazeGeneratorBase::Generate(int x, int y)
 
 void MazeGeneratorBase::Output()
 {
-	std::system("cls");
+	//std::system("cls");
 	std::stringstream ss;
 	for (int h = 0; h < height_; h++) {
 		for (int w = 0; w < width_; w++) {

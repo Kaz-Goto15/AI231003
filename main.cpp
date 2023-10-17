@@ -1,5 +1,5 @@
 #include "MazeGeneratorBar.h"
-#include "MazeGeneratorBase.h";
+#include "MazeGeneratorBase.h"
 #include "MazeGeneratorExtend.h"
 #include <iostream>
 #include <vector>

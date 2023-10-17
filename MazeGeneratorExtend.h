@@ -9,6 +9,10 @@ private:
     struct POINT {
         int x;
         int y;
+
+        bool operator == (const POINT pts) const {
+            return (x == pts.x && y == pts.y);
+        }
     };
     enum DIRECTION
     {
@@ -24,8 +28,9 @@ private:
     vector<POINT> currentWallPoint;
     void ExtendWall(POINT pts);
     bool IsDirCanExtend(POINT pts, POINT ValueOnDir);
-    bool IsCurrentWall(int currentPtsAttribute);
+    bool IsCurrentWall(POINT pts);
     void StoreDirectionValue(POINT* pts, DIRECTION dir);
+    void SetWall(POINT pts);
 public:
     MazeGeneratorExtend();
     ~MazeGeneratorExtend();

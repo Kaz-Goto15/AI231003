@@ -41,7 +41,7 @@ private:
     };
     bool IsEven(int num) { return !(num % 2); }
     bool IsEven(POINT pts) { return (IsEven(pts.x) && IsEven(pts.y)); }
-    bool IsOdd(POINT pts) { return !IsEven(pts); }
+    bool IsOdd(POINT pts) { return (!IsEven(pts.x) && !IsEven(pts.y)); }
 
     vector<POINT> startPointList;
     void Dig(POINT pts);

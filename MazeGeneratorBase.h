@@ -26,5 +26,7 @@ protected:
 	std::string modelName_;
 	int width_, height_;
 	vector<vector<int>> map_;
+	void CheckSave();
+	bool SaveFile();
 };
 

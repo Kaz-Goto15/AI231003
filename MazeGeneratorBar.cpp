@@ -82,7 +82,6 @@ bool MazeGeneratorBar::Create()
 						target.y--;
 						break;
 					}
-					cout << "Tgt: (" << target.x << "," << target.y << ")\n";
 					// •Ç‚Å‚È‚¯‚ê‚Î“|‚µ”²‚¯‚é
 					if (map_[target.y][target.x] != MAP_WALL){
 						map_[target.y][target.x] = MAP_WALL;
@@ -90,7 +89,6 @@ bool MazeGeneratorBar::Create()
 					}
 				}
 
-				cout << "Now: (" << x << "," << y << ")\n";
 				//Sleep(UPDATE_DELAY);
 				Output();
 			}

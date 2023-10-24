@@ -3,9 +3,9 @@
 #include <string>
 using std::vector;
 
-namespace {
-	static const int UPDATE_DELAY = 500;
-}
+//namespace {
+//	static const int UPDATE_DELAY = 500;
+//}
 class MazeGeneratorBase
 {
 public:

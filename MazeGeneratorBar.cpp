@@ -1,6 +1,6 @@
 #include "MazeGeneratorBar.h"
 #include <iostream>
-#include <windows.h>
+//#include <windows.h>
 using std::cout;
 
 MazeGeneratorBar::MazeGeneratorBar():
@@ -91,7 +91,7 @@ bool MazeGeneratorBar::Create()
 				}
 
 				cout << "Now: (" << x << "," << y << ")\n";
-				Sleep(UPDATE_DELAY);
+				//Sleep(UPDATE_DELAY);
 				Output();
 			}
 		}
